@@ -20,7 +20,7 @@ class MembersPage < Scraped::HTML
   field :members do
     member_rows.map { |p| fragment(p => MembersRow) }.flat_map do |row|
       h = row.to_h
-      h.delete(:members).map { |mem| mem.merge(h).merge(party: PARTIES[h[:party_id]]) }
+      h.delete(:members).map { |mem| mem.merge(h).merge(party_wikidata: PARTIES[h[:party]]) }
     end
   end
 
@@ -32,7 +32,7 @@ class MembersPage < Scraped::HTML
 end
 
 class MembersRow < Scraped::HTML
-  field :party_id do
+  field :party do
     noko.css('th sup').text
   end
 
